@@ -1,10 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
-    <AssemblyName>Bifrost.SimpleInjector</AssemblyName>
-    <PackageId>Bifrost.SimpleInjector</PackageId>
-    <DocumentationFile>bin\Debug\net461\Bifrost.SimpleInjector.xml</DocumentationFile>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,10 +14,4 @@
     <PackageReference Include="SimpleInjector" Version="3.3.2" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
-  <Import Project="..\Common.proj" />
 </Project>

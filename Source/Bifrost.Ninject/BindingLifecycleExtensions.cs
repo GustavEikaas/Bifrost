@@ -1,12 +1,9 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 using Bifrost.Execution;
 using Ninject.Syntax;
-#if(FALSE)
-using Ninject.Web.Common;
-#endif
 
 
 namespace Bifrost.Ninject
@@ -29,18 +26,6 @@ namespace Bifrost.Ninject
                 case BindingLifecycle.Singleton:
                     syntax.InSingletonScope();
                     break;
-#if (false)
-                case BindingLifecycle.Request:
-                    syntax.InRequestScope();
-                    break;
-#endif
-
-#if (NET461)
-                case BindingLifecycle.Thread:
-                    syntax.InThreadScope();
-                    break;
-#endif
-                
 
                 case BindingLifecycle.Transient:
                     syntax.InTransientScope();

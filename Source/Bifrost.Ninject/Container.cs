@@ -1,4 +1,4 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
@@ -28,13 +28,11 @@ namespace Bifrost.Ninject
             Kernel = kernel;
             _boundServices = new List<Type>();
 
-#if (!NET461)
             lock (kernel)
             {
                 kernel.Components.Remove<global::Ninject.Planning.Strategies.IPlanningStrategy, global::Ninject.Planning.Strategies.ConstructorReflectionStrategy>();
                 kernel.Components.Add<global::Ninject.Planning.Strategies.IPlanningStrategy, ConstructorReflectionStrategy>();
             }
-#endif
         }
 
         /// <summary>
@@ -88,11 +86,7 @@ namespace Bifrost.Ninject
             IEnumerable<IBinding> bindings;
             lock (Kernel)
             {
-#if (NET461)
-                bindings = Kernel.GetBindings(type);
-#else
                 bindings = ((IKernelConfiguration)Kernel).GetBindings(type);
-#endif
                 return bindings.Count() != 0;
             }
         }

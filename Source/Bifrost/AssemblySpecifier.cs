@@ -1,4 +1,4 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
@@ -16,9 +16,7 @@ namespace Bifrost
         public void Specify(IAssemblyRuleBuilder builder)
         {
             builder.ExcludeAssembliesStartingWith(
-#if(!NET461)
                 "SOS.NETCore",
-#endif                
                 "System",
                 "mscorlib",
                 "Microsoft"

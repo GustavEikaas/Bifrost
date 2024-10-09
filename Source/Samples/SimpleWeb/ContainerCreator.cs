@@ -1,7 +1,6 @@
-﻿using Bifrost.Configuration;
+using Bifrost.Configuration;
 using Bifrost.Execution;
 using Ninject;
-//using Bifrost.StructureMap;
 using Bifrost.Ninject;
 
 namespace SimpleWeb

@@ -1,4 +1,4 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
@@ -16,9 +16,7 @@ using Bifrost.Execution;
 using Bifrost.Extensions;
 using Bifrost.Logging;
 using Bifrost.Tenancy;
-#if(!NET461)
 using Microsoft.Extensions.Logging;
-#endif
 
 namespace Bifrost.Configuration
 {
@@ -56,17 +54,11 @@ namespace Bifrost.Configuration
         /// </summary>
         /// <returns></returns>
         public static Configure DiscoverAndConfigure(
-#if(!NET461)
             ILoggerFactory loggerFactory,
-#endif
             Action<AssembliesConfigurationBuilder> assembliesConfigurationBuilderCallback = null, 
             IEnumerable<ICanProvideAssemblies> additionalAssemblyProviders = null)
         {
-#if (NET461)
-            var logAppenders = LoggingConfigurator.DiscoverAndConfigure();
-#else
             var logAppenders = LoggingConfigurator.DiscoverAndConfigure(loggerFactory);
-#endif
             Logging.ILogger logger = new Logger(logAppenders);
             logger.Information("Starting up");
 
@@ -87,11 +79,7 @@ namespace Bifrost.Configuration
 
             var assemblyProviders = new List<ICanProvideAssemblies>
             {
-#if (NET461)
-                new AppDomainAssemblyProvider(logger),
-#else
                 new DefaultAssemblyProvider(logger),
-#endif
                 new FileSystemAssemblyProvider(new FileSystem(), logger)
             };
 

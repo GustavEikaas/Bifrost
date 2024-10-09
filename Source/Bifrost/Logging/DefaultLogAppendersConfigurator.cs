@@ -1,10 +1,8 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
 *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
 *  Licensed under the MIT License. See LICENSE in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
-#if(!NET461)
 using Microsoft.Extensions.Logging;
-#endif
 
 namespace Bifrost.Logging
 {
@@ -13,7 +11,6 @@ namespace Bifrost.Logging
     /// </summary>
     public class DefaultLogAppendersConfigurator : ICanConfigureLogAppenders
     {
-#if(!NET461)
         ILoggerFactory _loggerFactory;
 
         /// <summary>
@@ -24,17 +21,12 @@ namespace Bifrost.Logging
         {
             _loggerFactory = loggerFactory;
         }
-#endif
 
 
         /// <inheritdoc/>
         public void Configure(ILogAppenders appenders)
         {
-#if (NET461)
-            var defaultLogAppender = new DefaultLogAppender();
-#else
             var defaultLogAppender = new DefaultLogAppender(_loggerFactory);
-#endif
             appenders.Add(defaultLogAppender);
         }
     }

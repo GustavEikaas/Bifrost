@@ -1,10 +1,8 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-using System;
 using System.Linq.Expressions;
-using Bifrost.Execution;
 using Bifrost.Tenancy;
 
 namespace Bifrost.Security
@@ -31,7 +29,7 @@ namespace Bifrost.Security
         /// <param name="context"></param>
         /// <param name="expression"></param>
         /// <returns></returns>
-        public static ISecurityContext ExecutionContextValue(this ISecurityContext context, Expression<Func<ExecutionContext, object>> expression)
+        public static ISecurityContext ExecutionContextValue(this ISecurityContext context, Expression<Func<Execution.ExecutionContext, object>> expression)
         {
             throw new NotImplementedException();
         }

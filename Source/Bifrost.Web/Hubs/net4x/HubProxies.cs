@@ -1,4 +1,4 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
@@ -11,11 +11,7 @@ using Bifrost.Execution;
 using Bifrost.Extensions;
 using Bifrost.Web.Configuration;
 using Bifrost.Web.Proxies;
-#if(NET461)
-using Microsoft.AspNet.SignalR;
-#else
 using Microsoft.AspNetCore.SignalR;
-#endif
 
 namespace Bifrost.Web.Hubs
 {

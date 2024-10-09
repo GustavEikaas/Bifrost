@@ -1,39 +1,19 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
 *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
 *  Licensed under the MIT License. See LICENSE in the project root for license information.
 *--------------------------------------------------------------------------------------------*/
 using System;
 using System.Collections.Generic;
 using System.IO;
-#if (NET461)
-using System.Diagnostics;
-#else
 using Microsoft.Extensions.Logging;
-#endif
 
 namespace Bifrost.Logging
 {
-#if (NET461)
-    /// <summary>
-    /// Represents a default implementation of <see cref="ILogAppender"/> for using System.Diagnostics.Debug
-    /// </summary>
-#else
     /// <summary>
     /// Represents a default implementation of <see cref="ILogAppender"/> for using ILogger
     /// </summary>
-#endif
     public class DefaultLogAppender : ILogAppender
     {
-#if (NET461)
-        /// <inheritdoc/>
-        public void Append(string filePath, int lineNumber, string member, LogLevel level, string message, Exception exception = null)
-        {
-            if( exception == null )
-                Debug.WriteLine($"[{level}] - {message}", $"{filePath}[{lineNumber}] - {member}");
-            else
-                Debug.WriteLine($"[{level}] - {message}", $"{filePath}[{lineNumber}] - {member} - {exception.Message} - {exception.StackTrace}");
-        }
-#else
         ILoggerFactory _loggerFactory;
         Dictionary<string, Microsoft.Extensions.Logging.ILogger> _loggers = new Dictionary<string, Microsoft.Extensions.Logging.ILogger>();
 
@@ -70,6 +50,5 @@ namespace Bifrost.Logging
                 case LogLevel.Error: logger.LogError(0, exception, message); break;
             }
         }
-#endif
     }
 }
