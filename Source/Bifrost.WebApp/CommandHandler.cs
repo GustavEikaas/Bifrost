@@ -8,10 +8,12 @@ using Bifrost.FluentValidation.Commands;
 using Bifrost.Read;
 using Bifrost.Tenancy;
 using Concepts.Awesome;
+using Domain;
 using Events.Awesome;
 using FluentValidation;
 
-namespace Domain.Awesome
+//If this doesnt match the .Domain mapping in Configurator it wont work
+namespace NotSoDomain
 {
 
     public class InputValidator : CommandInputValidator<MyCommand>
@@ -33,7 +35,7 @@ namespace Domain.Awesome
 
         public void Handle(MyCommand command)
         {
-            Console.WriteLine("We handling shit yooo");
+            Console.WriteLine("Processing command:" + command.Id);
             var g = Guid.Parse("28ca41b6-68d8-4464-b8f8-e270cc928371");
             var es = _repository.Get(g);
             es.DoStuff(command.Something);

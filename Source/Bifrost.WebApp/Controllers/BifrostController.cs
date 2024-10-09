@@ -28,7 +28,7 @@ namespace Bifrost.WebApp.Controllers
             var commandCoordinator = s.Get<ICommandCoordinator>();
             if (commandCoordinator is not null)
             {
-                var res = commandCoordinator.Handle(new MyCommand() { Something = "abc" });
+                var res = commandCoordinator.Handle(new MyCommand() { Something = "" });
                 return res;
 
             }

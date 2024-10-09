@@ -28,7 +28,7 @@ namespace Bifrost.WebApp.Bifrost
 
             configure
                 .Application("QuickStart", a => a.Structure(s => s
-                        .Domain("Domain.{BoundedContext}.-{Module}.-{Feature}.^{SubFeature}*")
+                        .Domain("NotSoDomain.{BoundedContext}.-{Module}.-{Feature}.^{SubFeature}*")
                         .Events("Events.{BoundedContext}.-{Module}.-{Feature}.^{SubFeature}*")
                         .Read("Read.{BoundedContext}.-{Module}.-{Feature}.^{SubFeature}*")
                         .Frontend("Web.{BoundedContext}.-{Module}.-{Feature}.^{SubFeature}*")
