@@ -33,6 +33,7 @@ namespace Domain.Awesome
 
         public void Handle(MyCommand command)
         {
+            Console.WriteLine("We handling shit yooo");
             var g = Guid.Parse("28ca41b6-68d8-4464-b8f8-e270cc928371");
             var es = _repository.Get(g);
             es.DoStuff(command.Something);
@@ -107,8 +108,8 @@ namespace Read.Awesome
     {
         public MyReadModelMap()
         {
-            AutoMap();
-            MapIdMember(m => m.Identifier);
+            /* AutoMap(); */
+            /* MapIdMember(m => m.Identifier); */
         }
     }
 
