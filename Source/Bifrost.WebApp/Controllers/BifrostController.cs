@@ -1,6 +1,4 @@
-using Bifrost.CodeGeneration.JavaScript;
 using Bifrost.Commands;
-using Bifrost.Execution;
 using Bifrost.WebApp.Bifrost;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +22,7 @@ namespace Bifrost.WebApp.Controllers
         [HttpGet]
         public ActionResult<CommandResult> GetBifrost()
         {
+            //HACK: remove Ninject and rewrite to use standard IOC
             var s = GlobalVariables.DiContainer;
             var commandCoordinator = s.Get<ICommandCoordinator>();
             if (commandCoordinator is not null)
