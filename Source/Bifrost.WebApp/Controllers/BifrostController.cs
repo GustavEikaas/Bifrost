@@ -12,10 +12,13 @@ namespace Bifrost.WebApp.Controllers
     [Route("bifrost")]
     public class BifrostController : ControllerBase
     {
+        private readonly ICommandCoordinator commandCoordinator;
+        private readonly IQueryCoordinator queryCoordinator;
 
-        public BifrostController(StandardKernel kernel)
+        public BifrostController(ICommandCoordinator commandCoordinator, IQueryCoordinator queryCoordinator)
         {
-            Kernel = kernel;
+            this.commandCoordinator = commandCoordinator;
+            this.queryCoordinator = queryCoordinator;
         }
 
         public StandardKernel Kernel { get; }
@@ -24,9 +27,6 @@ namespace Bifrost.WebApp.Controllers
         [HttpGet]
         public ActionResult<QueryResult> Query()
         {
-            //HACK: remove Ninject and rewrite to use standard IOC
-            var s = GlobalVariables.DiContainer;
-            var queryCoordinator = s.Get<IQueryCoordinator>();
             if (queryCoordinator is not null)
             {
                 var res = queryCoordinator.Execute(new MyQuery(), new PagingInfo());
@@ -39,9 +39,6 @@ namespace Bifrost.WebApp.Controllers
         [HttpPost]
         public ActionResult<CommandResult> CreateCommand([FromBody] string something)
         {
-            //HACK: remove Ninject and rewrite to use standard IOC
-            var s = GlobalVariables.DiContainer;
-            var commandCoordinator = s.Get<ICommandCoordinator>();
             if (commandCoordinator is not null)
             {
                 var res = commandCoordinator.Handle(new MyCommand() { Something = something });
