@@ -16,7 +16,7 @@ var bifrost = BifrostConfigurator.DiscoverAndConfigure(new LoggerFactory());
 //Map all Bifrost.Ninject bindings to the DI container
 bifrost.Container.GetBoundServices().ForEach(s =>
 {
-    if (s.Namespace is not null && !s.Namespace.StartsWith("Bifrost.")) return;
+    if (s.Namespace is null || !s.Namespace.StartsWith("Bifrost.")) return;
     if (s.IsGenericType) return;
 
     builder.Services.AddTransient(s, (IServiceProvider _) => bifrost.Container.Get(s, true));
