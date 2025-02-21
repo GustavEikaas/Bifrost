@@ -1,4 +1,4 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
@@ -7,6 +7,8 @@ using NHibernate.UserTypes;
 using System.Data;
 using NHibernate.SqlTypes;
 using NHibernate;
+using System.Data.Common;
+using NHibernate.Engine;
 
 namespace Bifrost.NHibernate.UserTypes
 {
@@ -42,16 +44,16 @@ namespace Bifrost.NHibernate.UserTypes
 
         public bool IsMutable { get { return false; } }
 
-        public object NullSafeGet(IDataReader rs, string[] names, object owner)
+        public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
         {
-            var typeString = (string)NHibernateUtil.String.NullSafeGet(rs, names[0]);
+            var typeString = (string)NHibernateUtil.String.NullSafeGet(rs, names[0], session);
             return Type.GetType(typeString);
         }
 
-        public void NullSafeSet(IDbCommand cmd, object value, int index)
+        public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
         {
             var type = (Type)value;
-            NHibernateUtil.String.NullSafeSet(cmd, type.AssemblyQualifiedName, index);
+            NHibernateUtil.String.NullSafeSet(cmd, type.AssemblyQualifiedName, index, session);
         }
 
         public object Replace(object original, object target, object owner)

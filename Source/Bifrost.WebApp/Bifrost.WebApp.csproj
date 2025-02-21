@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Bifrost\Bifrost.csproj" />
+    <ProjectReference Include="..\Bifrost.NHibernate\Bifrost.NHibernate.csproj" />
     <ProjectReference Include="..\Bifrost.Ninject\Bifrost.Ninject.csproj" />
     <ProjectReference Include="..\Bifrost.JSON\Bifrost.JSON.csproj" />
     <ProjectReference Include="..\Bifrost.FluentValidation\Bifrost.FluentValidation.csproj" />

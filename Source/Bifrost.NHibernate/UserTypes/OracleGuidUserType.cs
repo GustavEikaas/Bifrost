@@ -1,10 +1,12 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 using System;
 using System.Data;
+using System.Data.Common;
 using NHibernate;
+using NHibernate.Engine;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
 
@@ -48,10 +50,10 @@ namespace Bifrost.NHibernate.UserTypes
             get { return true; }
         }
 
-        public object NullSafeGet(IDataReader rs, string[] names, object owner)
+        public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
         {
             var result = Guid.Empty;
-            var buffer = (byte[])NHibernateUtil.Binary.NullSafeGet(rs, names[0]);
+            var buffer = (byte[])NHibernateUtil.Binary.NullSafeGet(rs, names[0], session);
             if (buffer == null)
                 return result;
 
@@ -59,14 +61,10 @@ namespace Bifrost.NHibernate.UserTypes
             return result;
         }
 
-        public void NullSafeSet(IDbCommand cmd, object value, int index)
+        public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
         {
-            if (null == value) 
-                return;
-
-            var guidValue = (Guid)value;
-            var buffer = guidValue.ToByteArray();
-            NHibernateUtil.Binary.NullSafeSet(cmd, buffer, index);
+            var type = (Type)value;
+            NHibernateUtil.String.NullSafeSet(cmd, type.AssemblyQualifiedName, index, session);
         }
 
         public object Replace(object original, object target, object owner)

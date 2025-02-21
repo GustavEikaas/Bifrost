@@ -1,9 +1,10 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 using System;
 using System.Data;
+using System.Data.Common;
 using System.Reflection;
 using Bifrost.Concepts;
 using NHibernate;
@@ -17,7 +18,7 @@ namespace Bifrost.NHibernate.UserTypes
     public class OracleGuidMapping : NullSafeMapping
     {
 #pragma warning disable 1591
-        public override object Get(PropertyInfo property, IDataReader dr, string propertyName, ISessionImplementor session, object owner)
+        public override object Get(PropertyInfo property, DbDataReader dr, string propertyName, ISessionImplementor session, object owner)
         {
             var buffer = (byte[])NHibernateUtil.Binary.NullSafeGet(dr, propertyName, session, owner);
             if (null != buffer)
@@ -28,7 +29,7 @@ namespace Bifrost.NHibernate.UserTypes
             return Guid.Empty;
         }
 
-        public override void Set(PropertyInfo property, object value, IDbCommand cmd, int index, ISessionImplementor session)
+        public override void Set(PropertyInfo property, object value, DbCommand cmd, int index, ISessionImplementor session)
         {
             if (value == null)
                 return;
@@ -45,7 +46,7 @@ namespace Bifrost.NHibernate.UserTypes
             if(guidValue == Guid.Empty)
                 throw new InvalidOperationException("Invalid type: " + value.GetType());
 
-            NHibernateUtil.Binary.NullSafeSet(cmd, guidValue.ToByteArray(), index);
+            NHibernateUtil.Binary.NullSafeSet(cmd, guidValue.ToByteArray(), index, session);
         }
 #pragma warning restore 1591
     }

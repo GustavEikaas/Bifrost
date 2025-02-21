@@ -1,4 +1,4 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
@@ -9,6 +9,8 @@ using NHibernate.SqlTypes;
 using NHibernate;
 using System.Reflection;
 using Bifrost.Events;
+using System.Data.Common;
+using NHibernate.Engine;
 
 namespace Bifrost.NHibernate.UserTypes
 {
@@ -46,9 +48,9 @@ namespace Bifrost.NHibernate.UserTypes
 
         public bool IsMutable { get { return false; } }
 
-        public object NullSafeGet(IDataReader rs, string[] names, object owner)
+        public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner)
         {
-            var methodInfoString = (string)NHibernateUtil.String.NullSafeGet(rs, names[0]);
+            var methodInfoString = (string)NHibernateUtil.String.NullSafeGet(rs, names[0], session);
             var parts = methodInfoString.Split(';');
             var declaringType = Type.GetType(parts[0]);
             var eventType = Type.GetType(parts[1]);
@@ -56,11 +58,11 @@ namespace Bifrost.NHibernate.UserTypes
             return method;
         }
 
-        public void NullSafeSet(IDbCommand cmd, object value, int index)
+        public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
         {
             var method = (MethodInfo)value;
             var methodString = string.Format("{0};{1}", method.DeclaringType.AssemblyQualifiedName, method.GetParameters()[0].ParameterType.AssemblyQualifiedName);
-            NHibernateUtil.String.NullSafeSet(cmd, methodString, index);
+            NHibernateUtil.String.NullSafeSet(cmd, methodString, index, session);
         }
 
         public object Replace(object original, object target, object owner)

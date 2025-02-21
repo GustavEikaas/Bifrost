@@ -1,8 +1,9 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 using System.Data;
+using System.Data.Common;
 using System.Reflection;
 using NHibernate.Engine;
 
@@ -22,7 +23,7 @@ namespace Bifrost.NHibernate.UserTypes
         /// <param name="session">NHibernate Session</param>
         /// <param name="owner">Owner object/param>
         /// <returns></returns>
-        public abstract object Get(PropertyInfo property, IDataReader dr, string propertyName, ISessionImplementor session, object owner);
+        public abstract object Get(PropertyInfo property, DbDataReader dr, string propertyName, ISessionImplementor session, object owner);
         /// <summary>
         /// Sets the value of a custom type in to an IDbCommand
         /// </summary>
@@ -31,6 +32,6 @@ namespace Bifrost.NHibernate.UserTypes
         /// <param name="cmd">Database Command</param>
         /// <param name="index">Index position of the property</param>
         /// <param name="session">NHibernate Session</param>
-        public abstract void Set(PropertyInfo property, object value, IDbCommand cmd, int index, ISessionImplementor session);
+        public abstract void Set(PropertyInfo property, object value, DbCommand cmd, int index, ISessionImplementor session);
     }
 }

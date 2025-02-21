@@ -1,10 +1,11 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -135,7 +136,7 @@ namespace Bifrost.NHibernate.UserTypes
         /// <param name="session">An ISessionImplementor</param>
         /// <param name="owner">The entity that will have it's values populated</param>
         /// <returns>An instance of Type T</returns>
-        public virtual object NullSafeGet(IDataReader dr, string[] names, ISessionImplementor session, object owner)
+        public virtual object NullSafeGet(DbDataReader dr, string[] names, ISessionImplementor session, object owner)
         {
             if (dr == null)
                 return null;
@@ -157,7 +158,7 @@ namespace Bifrost.NHibernate.UserTypes
         /// <param name="index">Position to start the mapping of properties from</param>
         /// <param name="settable">Array of booleans indicating which properties are settable</param>
         /// <param name="session">An instance of ISessionImplementor</param>
-        public void NullSafeSet(IDbCommand cmd, object value, int index, bool[] settable, ISessionImplementor session)
+        public void NullSafeSet(DbCommand cmd, object value, int index, bool[] settable, ISessionImplementor session)
         {
             if (value == null)
                 return;

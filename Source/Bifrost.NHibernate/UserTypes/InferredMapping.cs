@@ -1,9 +1,10 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 using System;
 using System.Data;
+using System.Data.Common;
 using System.Reflection;
 using Bifrost.Concepts;
 using NHibernate;
@@ -18,12 +19,12 @@ namespace Bifrost.NHibernate.UserTypes
     public class InferredMapping : NullSafeMapping
     {
 #pragma warning disable 1591
-        public override object Get(PropertyInfo property, IDataReader dr, string propertyName, ISessionImplementor session, object owner)
+        public override object Get(PropertyInfo property, DbDataReader dr, string propertyName, ISessionImplementor session, object owner)
         {
             return GuessType(property.PropertyType).NullSafeGet(dr, propertyName, session, owner); ;
         }
 
-        public override void Set(PropertyInfo property, object value, IDbCommand cmd, int index, ISessionImplementor session)
+        public override void Set(PropertyInfo property, object value, DbCommand cmd, int index, ISessionImplementor session)
         {
             var propValue = property.GetValue(value, null);
             GuessType(property.PropertyType).NullSafeSet(cmd, propValue, index, session);
