@@ -16,6 +16,7 @@ using Bifrost.Execution;
 using Bifrost.Extensions;
 using Bifrost.Logging;
 using Bifrost.Tenancy;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Bifrost.Configuration
@@ -54,10 +55,17 @@ namespace Bifrost.Configuration
         /// </summary>
         /// <returns></returns>
         public static Configure DiscoverAndConfigure(
-            ILoggerFactory loggerFactory,
-            Action<AssembliesConfigurationBuilder> assembliesConfigurationBuilderCallback = null, 
-            IEnumerable<ICanProvideAssemblies> additionalAssemblyProviders = null)
+            IServiceCollection services,
+            ILoggerFactory loggerFactory)
         {
+            services.AddSingleton(typeof(IInstancesOf<>), typeof(InstancesOf<>));
+            services.AddTransient(typeof(Views.IView<>), typeof(Views.View<>));
+            services.AddTransient(typeof(Collections.IObservableCollection<>), typeof(Collections.ObservableCollection<>));
+            services.AddTransient(typeof(Domain.IAggregateRootRepository<>), typeof(Domain.AggregateRootRepository<>));
+            services.AddTransient(typeof(IInstancesOf<>), typeof(InstancesOf<>));
+            services.AddTransient(typeof(Read.IReadModelRepositoryFor<>), typeof(Read.ReadModelRepositoryFor<>));
+            services.AddTransient(typeof(Read.IReadModelOf<>), typeof(Read.ReadModelOf<>));
+
             var logAppenders = LoggingConfigurator.DiscoverAndConfigure(loggerFactory);
             Logging.ILogger logger = new Logger(logAppenders);
             logger.Information("Starting up");
@@ -65,7 +73,7 @@ namespace Bifrost.Configuration
             IContractToImplementorsMap contractToImplementorsMap;
 
             
-            var assembliesConfigurationBuilder = BuildAssembliesConfigurationIfCallbackDefined(assembliesConfigurationBuilderCallback);
+            var assembliesConfigurationBuilder = BuildAssembliesConfigurationIfCallbackDefined();
 
             logger.Trace("Settings up contract to implementors map");
 
@@ -83,8 +91,6 @@ namespace Bifrost.Configuration
                 new FileSystemAssemblyProvider(new FileSystem(), logger)
             };
 
-
-            if (additionalAssemblyProviders != null) assemblyProviders.AddRange(additionalAssemblyProviders);
 
             var assembliesConfiguration = new AssembliesConfiguration(assembliesConfigurationBuilder.RuleBuilder);
             var assemblyProvider = new AssemblyProvider(
@@ -113,6 +119,19 @@ namespace Bifrost.Configuration
                 contractToImplementorsMap);
             configure.EntryAssembly = canCreateContainerType.GetTypeInfo().Assembly;
             configure.Initialize();
+
+            //HACK: Map all Ninject bindings to the DI container
+            //TODO: Remove Ninject and register everything in the DI container
+            configure.Container.GetBoundServices().ForEach(s =>
+            {
+                if (s.Namespace is null || !s.Namespace.StartsWith("Bifrost.")) return;
+                if (s.IsGenericType) return;
+                Console.WriteLine($"Mapping {s.Name}");
+
+                services.AddTransient(s, (IServiceProvider _) => configure.Container.Get(s, true));
+            });
+
+
             return configure;
         }
 
@@ -269,10 +288,9 @@ namespace Bifrost.Configuration
             return createContainerType;
         }
 
-        static AssembliesConfigurationBuilder BuildAssembliesConfigurationIfCallbackDefined(Action<AssembliesConfigurationBuilder> assembliesConfigurationBuilderCallback)
+        static AssembliesConfigurationBuilder BuildAssembliesConfigurationIfCallbackDefined()
         {
             var builder = new AssembliesConfigurationBuilder();
-            assembliesConfigurationBuilderCallback?.Invoke(builder);
             if (builder.RuleBuilder == null) builder.IncludeAll();
             return builder;
         }
