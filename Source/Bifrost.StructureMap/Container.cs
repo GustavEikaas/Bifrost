@@ -1,4 +1,4 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
@@ -201,7 +201,7 @@ namespace Bifrost.StructureMap
                 case BindingLifecycle.Transient: return new TransientLifecycle();
                 case BindingLifecycle.Request: throw new NotImplementedException();
                 case BindingLifecycle.Singleton: return new SingletonLifecycle();
-                case BindingLifecycle.Thread: return new ThreadLocalStorageLifecycle();
+                /* case BindingLifecycle.Thread: return new ThreadLocalStorageLifecycle(); */
             }
 
             return new TransientLifecycle();

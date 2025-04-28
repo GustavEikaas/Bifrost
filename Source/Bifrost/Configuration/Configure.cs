@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Bifrost.Configuration.Assemblies;
 using Bifrost.Configuration.Defaults;
 using Bifrost.Diagnostics;
+using Bifrost.Entities.Files;
 using Bifrost.Events;
 using Bifrost.Execution;
 using Bifrost.Extensions;
@@ -126,7 +127,7 @@ namespace Bifrost.Configuration
             {
                 if (s.Namespace is null || !s.Namespace.StartsWith("Bifrost.")) return;
                 if (s.IsGenericType) return;
-                Console.WriteLine($"Mapping {s.Name}");
+                /* Console.WriteLine($"Mapping {s.Name}"); */
 
                 services.AddTransient(s, (IServiceProvider _) => configure.Container.Get(s, true));
             });
@@ -204,6 +205,7 @@ namespace Bifrost.Configuration
         public IFrontendConfiguration Frontend { get; private set; }
         public ICallContextConfiguration CallContext { get; private set; }
         public IExecutionContextConfiguration ExecutionContext { get; private set; }
+        public IEntityContextConfiguration EntityContext { get; private set; }
         public ISecurityConfiguration Security { get; private set; }
         public ITenancyConfiguration Tenancy { get; private set; }
         public AssembliesConfiguration Assemblies { get; private set; }

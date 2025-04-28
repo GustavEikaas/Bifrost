@@ -1,4 +1,4 @@
-﻿/*---------------------------------------------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  *  Copyright (c) 2008-2017 Dolittle. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
@@ -78,8 +78,8 @@ namespace Bifrost.SimpleInjector
                 case BindingLifecycle.Transient:
                     lifestyle = Lifestyle.Transient;
                     break;
-                case BindingLifecycle.Thread:
-                    throw new NotSupportedException("Ref documentation: This lifestyle is deliberately left out of Simple Injector because it is considered to be harmful. Instead of using Per Thread lifestyle, you will usually be better of using one of the Scoped lifestyles.");
+                /* case BindingLifecycle.Thread: */
+                    /* throw new NotSupportedException("Ref documentation: This lifestyle is deliberately left out of Simple Injector because it is considered to be harmful. Instead of using Per Thread lifestyle, you will usually be better of using one of the Scoped lifestyles."); */
             }
 
             return lifestyle;
